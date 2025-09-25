@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test</title>
+</head>
+
+<body>
+  <input type="date" name="" id="calender">
+  <button onclick="search()">search</button>
+  <br>
+  <p class="data"></p>
+  <input type="text" name="" id="message">
+  <button onclick="sendMessage()">send</button>
+  <script>
+    const baserow = {
+      url:"https://api.baserow.io/api/database/rows/table/685053/",
+      token: "Token z8Du55WVQi6wmFT3Ta6diQUSUxCqx8WR"
+    }
+    async function getMessage() {
+      let res = await fetch(`${baserow.url}`,{
+        method: 'GET',
+        headers: {
+          'Authorization': baserow.token,
+          'Content-Type': 'application/json',
+        },
+      })
+      let json = await res.json()
+      return json
+    }
+      async function searchMessage(date) {
+      let res = await fetch(`${baserow.url}?user_field_names=true&filter__Date__equal=${date}`,{
+        method: 'GET',
+        headers: {
+          'Authorization':  baserow.token,
+          'Content-Type': 'application/json',
+        },
+      })
+      let json = await res.json()
+      return json
+    }
+
+    async function search(){
+      let date = document.querySelector("input#calender").value
+      document.querySelector("p.data").innerHTML = JSON.stringify(await searchMessage(new Date(date).toLocaleDateString()))
+    }
+
+    getMessage()
+    function sendMessage() {
+      fetch(baserow.url+'?user_field_names=true', {
+        method: 'POST',
+        headers: {
+          'Authorization':  baserow.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Name: document.querySelector("input#message").value, // Replace with your actual data
+          Date: new Date().toLocaleDateString(), // Replace with your actual data
+        }),
+      })
+        .then(response => response.json()) // Parse the JSON response
+        .then(data => {
+          console.log('Success:', data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+
+    }
+  </script>
+</body>
+
+</html>
