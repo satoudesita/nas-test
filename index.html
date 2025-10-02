@@ -21,6 +21,7 @@
   <script>
     const baserow = {
       url:"https://api.baserow.io/api/database/rows/table/685053/",
+      lateurl:"https://api.baserow.io/api/database/rows/table/691308/",
       token: "Token z8Du55WVQi6wmFT3Ta6diQUSUxCqx8WR"
     }
     async function getMessage() {
@@ -71,7 +72,7 @@
 
     getMessage()
     function sendMessage() {
-      fetch(baserow.url+'?user_field_names=true', {
+      fetch(baserow.lateurl+'?user_field_names=true', {
         method: 'POST',
         headers: {
           'Authorization':  baserow.token,
