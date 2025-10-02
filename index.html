@@ -8,11 +8,15 @@
 </head>
 
 <body>
-  <input type="date" name="" id="calender">
+  <input type="date" name="" id="calender" placeholder="date">
   <button onclick="search()">search</button>
   <br>
+  <input type="text" name="" id="name" placeholder="name">
+  <button onclick="nameSearch()">search</button>
+  <br>
   <p class="data"></p>
-  <input type="text" name="" id="message">
+  <p class="name"></p>
+  <input type="text" name="" id="message" placeholder="message">
   <button onclick="sendMessage()">send</button>
   <script>
     const baserow = {
@@ -30,8 +34,20 @@
       let json = await res.json()
       return json
     }
-      async function searchMessage(date) {
+    async function searchMessage(date) {
       let res = await fetch(`${baserow.url}?user_field_names=true&filter__Date__equal=${date}`,{
+        method: 'GET',
+        headers: {
+          'Authorization':  baserow.token,
+          'Content-Type': 'application/json',
+        },
+      })
+      let json = await res.json()
+      return json
+    }
+
+    async function searchName(namedate) {
+      let res = await fetch(`${baserow.url}?user_field_names=true&filter__Name__equal=${namedate}`,{
         method: 'GET',
         headers: {
           'Authorization':  baserow.token,
@@ -45,6 +61,12 @@
     async function search(){
       let date = document.querySelector("input#calender").value
       document.querySelector("p.data").innerHTML = JSON.stringify(await searchMessage(new Date(date).toLocaleDateString()))
+    }
+
+    async function nameSearch(){
+      let namedata = document.querySelector("input#name").value
+      await console.log(await searchName(namedata))
+      document.querySelector("p.name").innerHTML = JSON.stringify(await searchName(namedata))
     }
 
     getMessage()
