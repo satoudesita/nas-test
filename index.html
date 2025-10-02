@@ -72,7 +72,7 @@
 
     getMessage()
     function sendMessage() {
-      fetch(baserow.lateurl+'?user_field_names=true', {
+      fetch(baserow.url+'?user_field_names=true', {
         method: 'POST',
         headers: {
           'Authorization':  baserow.token,
